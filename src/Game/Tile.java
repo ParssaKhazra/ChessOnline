@@ -43,9 +43,17 @@ public class Tile extends Label
 		
 	}
 	
+	
+	
 	public void setPiece(Piece p)
 	{
 		this.p = p;
+		
+		if (p != null)
+			setImage(p.getImage());
+		else
+			setImage(null);
+	
 	}
 	public Piece getPiece()
 	{
@@ -63,9 +71,9 @@ public class Tile extends Label
 	}
 	
 	//TEMP METHOD
-	public void setImage(Image i)
+	public void setImage(ImageView i)
 	{
-		this.setGraphic(new ImageView(i));
+		this.setGraphic(i);
 		this.setAlignment(Pos.CENTER);
 	}
 
