@@ -69,11 +69,15 @@ public class Tile extends Label
 		}
 
 		else
+		{
 			System.out.println("Cannot move here!");
+			isSelected = false;
+		}
 
-		setOnAction();
+		//setOnAction();
 	}
 
+	// merge check kill to check move
 	private void checkKill()
 	{
 		ArrayList<int[]> moveSet = selectedTile.getPiece().getMoveSet();
@@ -85,19 +89,21 @@ public class Tile extends Label
 				canMove =true;
 
 		}
-		
+
 		if(canMove)
 		{
 			//set enemy piece to null -> add to dead pile later
-			
+
 			setPiece(null);
 			selectedTile.getPiece().setMoveCount(selectedTile.getPiece().getMoveCount()+1);
 			setPiece(selectedTile.getPiece());
 			selectedTile.setPiece(null);
 			isSelected =  false;
-			
-			
+
 		}
+		else
+			isSelected = false;
+
 
 	}
 

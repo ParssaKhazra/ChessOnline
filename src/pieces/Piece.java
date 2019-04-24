@@ -147,6 +147,9 @@ public class Piece
 			//PAWN
 			Pawn p = (Pawn) Board.grid[row][col].getPiece();
 			moveSet = p.generateMoveSet(Board.grid[row][col]);
+			/*
+			 * { [x,y], [x,y], [x,y], [x,y] }
+			 */
 		}
 		else
 		{
