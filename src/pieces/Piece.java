@@ -137,6 +137,8 @@ public class Piece
 		else if(type == 4)
 		{
 			//BISHOP
+			Bishop p = (Bishop) Board.grid[row][col].getPiece();
+			moveSet = p.generateMoveSet(Board.grid[row][col]);
 		}
 		else if (type ==5)
 		{

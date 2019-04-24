@@ -71,6 +71,19 @@ public class Board extends GridPane
 		}
 
 	}
+	
+	public static void clearText()
+	{
+		for(int i=0; i< 8; i++)
+		{
+			for(int j =0; j< 8; j++)
+			{
+				grid[i][j].setStyle(grid[i][j].style);
+				grid[i][j].setText(null);
+				
+			}
+		}
+	}
 
 
 }
