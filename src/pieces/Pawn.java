@@ -71,23 +71,21 @@ public class Pawn extends Piece
 
 		//killing move set
 		int x=0, y=0;
-		if(row >0 && col < 7 && row <7 && col >0)
-
-			for(int i = 0; i<4; i++)
+		for(int i = 0; i<4; i++)
 			{
-				if(i ==0)
+				if(i ==0 && col < 7 && row <7 )
 				{
 					x=1; y = 1;
 				}
-				else if(i == 1)
+				else if(i == 1 && row <7 && col >0)
 				{
 					x=1; y =-1;
 				}
-				else if(i == 2)
+				else if(i == 2 && row >0 && col < 7)
 				{
 					x=-1; y= 1;
 				}
-				else
+				else if(i ==3 && row >0 && col >0 )
 				{
 					x=-1; y=-1;
 				}
@@ -102,6 +100,11 @@ public class Pawn extends Piece
 
 
 		return moveSet;
+	}
+	
+	private void pawnPromotion()
+	{
+		//doing this later
 	}
 
 

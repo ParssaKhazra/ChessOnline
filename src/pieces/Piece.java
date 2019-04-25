@@ -125,14 +125,20 @@ public class Piece
 		if (type ==1)
 		{
 			//KING
+			King p = (King) Board.grid[row][col].getPiece();
+			moveSet = p.generateMoveSet(Board.grid[row][col]);
 		}
 		else if(type == 2)
 		{
 			//QUEEN
+			Queen p = (Queen) Board.grid[row][col].getPiece();
+			moveSet = p.generateMoveSet(Board.grid[row][col]);
 		}
 		else if(type == 3)
 		{
 			//KNIGHT
+			Knight p = (Knight) Board.grid[row][col].getPiece();
+			moveSet = p.generateMoveSet(Board.grid[row][col]);
 		}
 		else if(type == 4)
 		{
@@ -143,6 +149,8 @@ public class Piece
 		else if (type ==5)
 		{
 			//ROOK
+			Rook p = (Rook) Board.grid[row][col].getPiece();
+			moveSet = p.generateMoveSet(Board.grid[row][col]);
 		}
 		else if (type == 6)
 		{
