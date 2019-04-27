@@ -50,7 +50,8 @@ public class King extends Piece
 				//check for occupied
 				if(Board.grid[a][b].isOccupied())
 				{
-					if(!Board.grid[a][b].getPiece().getCol().equals(p.col))
+					String s =Board.grid[a][b].getPiece().getCol();
+					if(!s.equals(p.col) && !Board.grid[a][b].getFlag(s))
 					{
 						moveSet.add(moves[i]);
 						killSet.add(moves[i]);

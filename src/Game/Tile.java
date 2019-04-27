@@ -279,6 +279,14 @@ public class Tile extends Label
 		this.safe = safe;
 	}
 
+	public boolean getFlag(String s) 
+	{
+		if( s.equals("white"))
+			return whiteFlag;
+		else
+			return blackFlag;
+	}
+
 
 
 
