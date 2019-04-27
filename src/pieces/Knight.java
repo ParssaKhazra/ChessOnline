@@ -19,10 +19,10 @@ public class Knight extends Piece
 		super.setName("Knight");
 	}
 	
-	public ArrayList<int[]> generateMoveSet(Tile t)
+	public ArrayList<int[]> generateMoveSet(Tile t, int select)
 	{
-		ArrayList<int[]> moveSet = super.getMoveSet();
-		moveSet.clear();
+		ArrayList<int[]> moveSet = new ArrayList<int[]>();
+		ArrayList<int[]> protectedSet = new ArrayList<int[]>();
 
 		int row = t.getCoordinates()[0], col = t.getCoordinates()[1];
 		Piece p = t.getPiece();
@@ -47,7 +47,6 @@ public class Knight extends Piece
 			{x+2, y+1}, {x+2, y-1}, {x-2, y+1}, {x-2, y-1}, {x+1, y+2}, {x+1, y-2}, {x-1, y+2}, {x-1, y-2} 
 		};
 		
-		
 		//iterate through the moves and detect valid ones
 		for(int i=0; i< 8; i++)
 		{
@@ -59,7 +58,13 @@ public class Knight extends Piece
 				if(Board.grid[a][b].isOccupied())
 				{
 					if(!Board.grid[a][b].getPiece().getCol().equals(p.col))
+					{
 						moveSet.add(moves[i]);
+					}
+					else
+					{
+						protectedSet.add(moves[i]);
+					}
 				}
 				else
 				{
@@ -67,11 +72,11 @@ public class Knight extends Piece
 				}
 			}
 		}
-		
-		
-		
-		
-		
-		return moveSet;
-	}
+				
+		if(select == 0)
+			return moveSet;
+		else if( select == 1)
+			return moveSet;
+		else
+			return protectedSet;	}
 }

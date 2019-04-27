@@ -19,10 +19,16 @@ public class Bishop extends Piece
 		super.setName("Bishop");
 	}
 
-	public ArrayList<int[]> generateMoveSet(Tile t)	
+	/*
+	 * this method will return a set of moves for the tile that is passed in
+	 * input 0 for general moveSet
+	 * input 1 for killSet
+	 * input 2 for protectedSet
+	 */
+	public ArrayList<int[]> generateMoveSet(Tile t, int select)	
 	{
-		ArrayList<int[]> moveSet = super.getMoveSet();
-		moveSet.clear();
+		ArrayList<int[]> moveSet = new ArrayList<int[]>();
+		ArrayList<int[]> protectedSet = new ArrayList<int[]>();
 
 		int row = t.getCoordinates()[0], col = t.getCoordinates()[1];
 		Piece p = t.getPiece();
@@ -63,13 +69,17 @@ public class Bishop extends Piece
 				
 				
 				//if the diagonal tile is occupied, check the colour of the piece
+				int[] index = new int[] {x,y};
 				if(Board.grid[x][y].isOccupied())
 				{
 					if(Board.grid[x][y].getPiece().getCol().equals(p.getCol()) )
+					{
+						protectedSet.add(index);
 						blocked = true;
+					}
 					else
 					{
-						moveSet.add(new int[] {x,y});
+						moveSet.add(index);
 						blocked = true;
 					}
 				}
@@ -86,6 +96,12 @@ public class Bishop extends Piece
 			x=row; y=col; blocked = false;
 
 		}
-		return moveSet;
+		
+		if(select == 0)
+			return moveSet;
+		else if( select == 1)
+			return moveSet;
+		else
+			return protectedSet;
 	}
 }

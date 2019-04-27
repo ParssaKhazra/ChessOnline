@@ -19,10 +19,11 @@ public class King extends Piece
 		super.setName("King");
 	}
 	
-	public ArrayList<int[]> generateMoveSet(Tile t)
+	public ArrayList<int[]> generateMoveSet(Tile t,int select)
 	{
-		ArrayList<int[]> moveSet = super.getMoveSet();
-		moveSet.clear();
+		ArrayList<int[]> moveSet = new ArrayList<int[]>();
+		ArrayList<int[]> killSet = new ArrayList<int[]>();
+		ArrayList<int[]> protectedSet = new ArrayList<int[]>();
 
 		int row = t.getCoordinates()[0], col = t.getCoordinates()[1];
 		Piece p = t.getPiece();
@@ -31,7 +32,7 @@ public class King extends Piece
 		 * the king moves in every direction, 1 space	
 		 */
 		//ACCOUNTING FOR CHECK LATER
-		
+				
 		int x = row; int y= col;
 		int[][] moves = new int[][]
 		{		
@@ -50,19 +51,49 @@ public class King extends Piece
 				if(Board.grid[a][b].isOccupied())
 				{
 					if(!Board.grid[a][b].getPiece().getCol().equals(p.col))
+					{
 						moveSet.add(moves[i]);
+						killSet.add(moves[i]);
+					}
+					else
+					{
+						protectedSet.add(moves[i]);
+					}
 				}
-				else
+				else 
 				{
-					moveSet.add(moves[i]);
+					//moveSet.add(moves[i]);
+					if( Board.grid[a][b].getWhiteFlag() && p.col.equals("white"))
+					{
+						moveSet.add(moves[i]);
+					}
+					else if(Board.grid[a][b].getWhiteFlag() && p.col.equals("black"))
+					{
+						System.err.println("flaged ("+a+","+b+")");
+					}
+					else if( Board.grid[a][b].getBlackFlag() && p.col.equals("black"))
+					{
+						moveSet.add(moves[i]);
+					}
+					else if(Board.grid[a][b].getBlackFlag() && p.col.equals("white"))
+					{
+						System.err.println("flaged ("+a+","+b+")");
+					}
+					else
+					{
+						moveSet.add(moves[i]);
+					}
+					
 				}
 			}
 		}
 		
 		
-		
-		
-		
-		return moveSet;
+		if(select == 0)
+			return moveSet;
+		else if( select == 1)
+			return killSet;
+		else
+			return protectedSet;
 	}
 }

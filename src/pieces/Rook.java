@@ -19,11 +19,18 @@ public class Rook extends Piece
 		super.setImage(new ImageView(new Image(url))) ;
 		super.setName("Rook");
 	}
-	
-	public ArrayList<int[]> generateMoveSet(Tile t)	
+
+	/*
+	 * this method will return a set of moves for the tile that is passed in
+	 * input 0 for general moveSet
+	 * input 1 for killSet
+	 * input 2 for protectedSet
+	 */
+
+	public ArrayList<int[]> generateMoveSet(Tile t, int select)	
 	{
-		ArrayList<int[]> moveSet = super.getMoveSet();
-		moveSet.clear();
+		ArrayList<int[]> moveSet = new ArrayList<int[]>();
+		ArrayList<int[]> protectedSet = new ArrayList<int[]>();
 
 		int row = t.getCoordinates()[0], col = t.getCoordinates()[1];
 		Piece p = t.getPiece();
@@ -61,23 +68,30 @@ public class Rook extends Piece
 				{
 					x=row; y--;	
 				}
-					
+
 				//if the diagonal tile is occupied, check the colour of the piece
+				int[] index = new int[] {x,y};
+
 				if(Board.grid[x][y].isOccupied())
 				{
+					//for killing or protecting 
 					if(Board.grid[x][y].getPiece().getCol().equals(p.getCol()) )
+					{
 						blocked = true;
+						protectedSet.add(index);
+					}
 					else
 					{
-						moveSet.add(new int[] {x,y});
+						moveSet.add(index);
 						blocked = true;
 					}
 				}
 				else
 				{
-					moveSet.add(new int[] {x,y});
+					//general movement
+					moveSet.add(index);
 				}
-				
+
 				//checking if the piece is at the end of the board
 				if( i==0 && x == 7)
 					blocked = true;
@@ -87,12 +101,17 @@ public class Rook extends Piece
 					blocked = true;
 				else if(i == 3 && y == 0)
 					blocked = true;
-		
+
 			}
 			x=row; y=col; blocked = false;
 
 		}
-		return moveSet;
+		if(select == 0)
+			return moveSet;
+		else if( select == 1)
+			return moveSet;
+		else
+			return protectedSet;
 	}
 
 }

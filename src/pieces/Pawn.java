@@ -20,10 +20,17 @@ public class Pawn extends Piece
 		super.setImage(new ImageView(new Image(url))) ;
 	}
 
-	public ArrayList<int[]> generateMoveSet(Tile t)	
+	/*
+	 * this method will return a set of moves for the tile that is passed in
+	 * input 0 for general moveSet
+	 * input 1 for killSet
+	 * input 2 for protectedSet
+	 */
+	public ArrayList<int[]> generateMoveSet(Tile t, int select)	
 	{
-		ArrayList<int[]> moveSet = super.getMoveSet();
-		moveSet.clear();
+		ArrayList<int[]> moveSet = new ArrayList<int[]>();
+		ArrayList<int[]> killSet = new ArrayList<int[]>();
+		ArrayList<int[]> protectedSet = new ArrayList<int[]>();
 
 		int row = t.getCoordinates()[0], col = t.getCoordinates()[1];
 		Piece p = t.getPiece();
@@ -56,7 +63,7 @@ public class Pawn extends Piece
 					blocked = true;
 				else
 					moveSet.add(new int[] {row-(i+1), col});
-				
+
 			}
 			else
 			{
@@ -72,36 +79,59 @@ public class Pawn extends Piece
 		//killing move set
 		int x=0, y=0;
 		for(int i = 0; i<4; i++)
+		{
+			if(i ==0 && col < 7 && row <7 )
 			{
-				if(i ==0 && col < 7 && row <7 )
-				{
-					x=1; y = 1;
-				}
-				else if(i == 1 && row <7 && col >0)
-				{
-					x=1; y =-1;
-				}
-				else if(i == 2 && row >0 && col < 7)
-				{
-					x=-1; y= 1;
-				}
-				else if(i ==3 && row >0 && col >0 )
-				{
-					x=-1; y=-1;
-				}
-				if( (p.col.equals("white") && (i == 3 || i==2)) || (p.col.equals("black") && (i == 0 || i==1)) )	
-				{
-					if(Board.grid[row+x][col+y].isOccupied() && !p.getCol().equals(Board.grid[row+x][col+y].getPiece().getCol()))
-						moveSet.add(new int[] {row+x, col+y});
-				}
-				
+				x=1; y = 1;
 			}
-		
+			else if(i == 1 && row <7 && col >0)
+			{
+				x=1; y =-1;
+			}
+			else if(i == 2 && row >0 && col < 7)
+			{
+				x=-1; y= 1;
+			}
+			else if(i ==3 && row >0 && col >0 )
+			{
+				x=-1; y=-1;
+			}
+			
+			int[] index = new int[] {row+x, col+y};
+			
+			if( (p.col.equals("white") && (i == 3 || i==2)) || (p.col.equals("black") && (i == 0 || i==1)) )	
+			{
+				if(Board.grid[row+x][col+y].isOccupied())
+				{
+					
+
+					if(p.getCol().equals(Board.grid[row+x][col+y].getPiece().getCol()))
+					{
+						protectedSet.add(index);
+					}
+					else
+					{
+						moveSet.add(index);
+						killSet.add(index);
+					}
+				}
+				else
+				{
+					killSet.add(index);
+				}
+			}
+
+		}
 
 
-		return moveSet;
+		if(select == 0)
+			return moveSet;
+		else if( select == 1)
+			return killSet;
+		else
+			return protectedSet;
 	}
-	
+
 	private void pawnPromotion()
 	{
 		//doing this later

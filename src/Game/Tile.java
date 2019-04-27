@@ -18,7 +18,7 @@ public class Tile extends Label
 {
 
 	private static boolean isSelected;
-	private boolean  hasPiece;
+	private boolean hasPiece, whiteFlag, blackFlag, safe;
 	private Piece p;
 	private int x, y;
 	private static Tile selectedTile;
@@ -52,7 +52,7 @@ public class Tile extends Label
 
 	private void checkMove() 
 	{
-
+		
 		ArrayList<int[]> moveSet = selectedTile.getPiece().getMoveSet();
 
 		boolean canMove = false;
@@ -60,17 +60,20 @@ public class Tile extends Label
 		{
 			if(moveSet.get(i)[0] == x && moveSet.get(i)[1] == y)
 				canMove =true;
-
 		}
 
 		if(canMove)
 		{
 			selectedTile.getPiece().setMoveCount(selectedTile.getPiece().getMoveCount()+1);
+			
+			//Board.removeFlags(selectedTile);
+						
 			setPiece(selectedTile.getPiece());
-
-			int row = selectedTile.x, col = selectedTile.y;
+			//Board.addFlags(this);
+			
+			selectedTile.setPiece(null);
 			isSelected = false;
-			Board.grid[row][col].setPiece(null);
+			
 		}
 
 		else
@@ -79,7 +82,8 @@ public class Tile extends Label
 			isSelected = false;
 		}
 
-		//setOnAction();
+		Board.setFlags();
+		
 	}
 
 	// merge check kill to check move
@@ -98,18 +102,21 @@ public class Tile extends Label
 		if(canMove)
 		{
 			//set enemy piece to null -> add to dead pile later
+		//	Board.removeFlags(this);
+		//	Board.removeFlags(selectedTile);
 			setPiece(null);
 			hasPiece =false;
 			selectedTile.getPiece().setMoveCount(selectedTile.getPiece().getMoveCount()+1);
 			setPiece(selectedTile.getPiece());
+		//	Board.addFlags(this);
 			selectedTile.setPiece(null);
 			isSelected =  false;
 
 		}
 		else
 			isSelected = false;
-
-
+		
+		Board.setFlags();
 	}
 
 
@@ -172,7 +179,7 @@ public class Tile extends Label
 	public void setSelected() 
 	{
 		Board.clearText();
-
+				
 		if(p != null && !isSelected)
 		{
 			p.generateMoveSet(x,y);
@@ -201,7 +208,9 @@ public class Tile extends Label
 	private void highlight()
 	{
 		ArrayList<int[]> moveSet = selectedTile.getPiece().getMoveSet();
-		
+		ArrayList<int[]> protectedSet = selectedTile.getPiece().getProtectedSet();
+
+		//moves and kills
 		for(int i=0; i< moveSet.size(); i++)
 		{
 			Tile t = Board.grid[moveSet.get(i)[0]][moveSet.get(i)[1]];
@@ -211,13 +220,21 @@ public class Tile extends Label
 			}
 			else
 			{
-			t.setText("X");
-			t.setStyle(t.getStyle()+"-fx-text-fill: red; -fx-font-size: 20; ");
+				t.setText("X");
+				t.setStyle(t.getStyle()+"-fx-text-fill: red; -fx-font-size: 20; ");
 			}
-			
 		}
+		
+//		for(int i=0; i<protectedSet.size(); i++)
+//		{
+//			Tile t = Board.grid[protectedSet.get(i)[0]][protectedSet.get(i)[1]];
+//			t.setStyle(t.getStyle()+"-fx-border-color: black; -fx-border-width: 0.75;");
+//		}
+		
+		//Color.chartreuse , lawngreen, greenyellow
+		selectedTile.setStyle(selectedTile.getStyle()+"-fx-border-color: blue; -fx-border-width: 0.75;");
 	}
-	
+
 	public void setCoordinates(int x, int y)
 	{
 		this.x =x;
@@ -236,6 +253,30 @@ public class Tile extends Label
 			return "Tile at ("+x+","+y+") contains "+p.getDescription()+"\nPossible moves: {"+p.printMoveSet()+"}";
 		else
 			return "Tile at ("+x+","+y+") does not contain a piece";
+	}
+
+	public boolean getWhiteFlag() {
+		return whiteFlag;
+	}
+
+	public void setWhiteFlag(boolean whiteFlag) {
+		this.whiteFlag = whiteFlag;
+	}
+
+	public boolean getBlackFlag() {
+		return blackFlag;
+	}
+
+	public void setBlackFlag(boolean blackFlag) {
+		this.blackFlag = blackFlag;
+	}
+
+	public boolean isSafe() {
+		return safe;
+	}
+
+	public void setSafe(boolean safe) {
+		this.safe = safe;
 	}
 
 
