@@ -7,6 +7,10 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.paint.Color;
 import pieces.Piece;
 
 
@@ -14,10 +18,11 @@ public class Tile extends Label
 {
 
 	private static boolean isSelected;
-	private boolean  hasPiece;
+	private boolean hasPiece, whiteFlag, blackFlag, safe;
 	private Piece p;
 	private int x, y;
 	private static Tile selectedTile;
+	public String style;
 
 
 	public Tile()
@@ -47,7 +52,7 @@ public class Tile extends Label
 
 	private void checkMove() 
 	{
-
+		
 		ArrayList<int[]> moveSet = selectedTile.getPiece().getMoveSet();
 
 		boolean canMove = false;
@@ -55,17 +60,20 @@ public class Tile extends Label
 		{
 			if(moveSet.get(i)[0] == x && moveSet.get(i)[1] == y)
 				canMove =true;
-
 		}
 
 		if(canMove)
 		{
 			selectedTile.getPiece().setMoveCount(selectedTile.getPiece().getMoveCount()+1);
+			
+			//Board.removeFlags(selectedTile);
+						
 			setPiece(selectedTile.getPiece());
-
-			int row = selectedTile.x, col = selectedTile.y;
+			//Board.addFlags(this);
+			
+			selectedTile.setPiece(null);
 			isSelected = false;
-			Board.grid[row][col].setPiece(null);
+			
 		}
 
 		else
@@ -74,7 +82,8 @@ public class Tile extends Label
 			isSelected = false;
 		}
 
-		//setOnAction();
+		Board.setFlags();
+		
 	}
 
 	// merge check kill to check move
@@ -93,29 +102,36 @@ public class Tile extends Label
 		if(canMove)
 		{
 			//set enemy piece to null -> add to dead pile later
-
+		//	Board.removeFlags(this);
+		//	Board.removeFlags(selectedTile);
 			setPiece(null);
+			hasPiece =false;
 			selectedTile.getPiece().setMoveCount(selectedTile.getPiece().getMoveCount()+1);
 			setPiece(selectedTile.getPiece());
+		//	Board.addFlags(this);
 			selectedTile.setPiece(null);
 			isSelected =  false;
 
 		}
 		else
 			isSelected = false;
-
-
+		
+		Board.setFlags();
 	}
-
-
 
 
 	public void setCol(boolean col)
 	{
 		if(col == false)
+		{
 			this.setStyle("-fx-background-color: #8FBC8F;"/*Color.DARKSEAGREEN*/);
+			style = "-fx-background-color: #8FBC8F;";
+		}
 		else
+		{
 			this.setStyle("-fx-background-color: #F5F5DC;"/*Color.BEIGE*/);
+			style = "-fx-background-color: #F5F5DC;";
+		}
 
 	}
 
@@ -150,7 +166,6 @@ public class Tile extends Label
 		this.hasPiece = isOccupied;
 	}
 
-	//TEMP METHOD
 	public void setImage(ImageView i)
 	{
 		this.setGraphic(i);
@@ -163,11 +178,20 @@ public class Tile extends Label
 
 	public void setSelected() 
 	{
-
+		Board.clearText();
+				
 		if(p != null && !isSelected)
 		{
 			p.generateMoveSet(x,y);
 			selectedTile = this;
+			highlight();
+			isSelected = true;
+		}
+		else if(p !=null && isSelected && selectedTile.getPiece().getCol().equals(p.getCol()))
+		{
+			p.generateMoveSet(x, y);
+			selectedTile = this;
+			highlight();
 			isSelected = true;
 		}
 		else if(p == null && isSelected)
@@ -179,6 +203,36 @@ public class Tile extends Label
 			checkKill();
 		}
 		System.out.println(getDescription());
+	}
+
+	private void highlight()
+	{
+		ArrayList<int[]> moveSet = selectedTile.getPiece().getMoveSet();
+		ArrayList<int[]> protectedSet = selectedTile.getPiece().getProtectedSet();
+
+		//moves and kills
+		for(int i=0; i< moveSet.size(); i++)
+		{
+			Tile t = Board.grid[moveSet.get(i)[0]][moveSet.get(i)[1]];
+			if(t.isOccupied())
+			{
+				t.setStyle(t.getStyle()+"-fx-border-color: red; -fx-border-width: 0.75;");
+			}
+			else
+			{
+				t.setText("X");
+				t.setStyle(t.getStyle()+"-fx-text-fill: red; -fx-font-size: 20; ");
+			}
+		}
+		
+//		for(int i=0; i<protectedSet.size(); i++)
+//		{
+//			Tile t = Board.grid[protectedSet.get(i)[0]][protectedSet.get(i)[1]];
+//			t.setStyle(t.getStyle()+"-fx-border-color: black; -fx-border-width: 0.75;");
+//		}
+		
+		//Color.chartreuse , lawngreen, greenyellow
+		selectedTile.setStyle(selectedTile.getStyle()+"-fx-border-color: blue; -fx-border-width: 0.75;");
 	}
 
 	public void setCoordinates(int x, int y)
@@ -201,7 +255,36 @@ public class Tile extends Label
 			return "Tile at ("+x+","+y+") does not contain a piece";
 	}
 
+	public boolean getWhiteFlag() {
+		return whiteFlag;
+	}
 
+	public void setWhiteFlag(boolean whiteFlag) {
+		this.whiteFlag = whiteFlag;
+	}
 
+	public boolean getBlackFlag() {
+		return blackFlag;
+	}
+
+	public void setBlackFlag(boolean blackFlag) {
+		this.blackFlag = blackFlag;
+	}
+
+	public boolean isSafe() {
+		return safe;
+	}
+
+	public void setSafe(boolean safe) {
+		this.safe = safe;
+	}
+
+	public boolean getFlag(String s) 
+	{
+		if( s.equals("white"))
+			return whiteFlag;
+		else
+			return blackFlag;
+	}
 
 }

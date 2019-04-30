@@ -71,7 +71,7 @@ public class Game
 		blackTeam.add(new Rook("black"));
 
 		board.addTeams(whiteTeam, blackTeam);
-
+		
 	}
 
 

@@ -13,12 +13,14 @@ public class Piece
 	private int pieceType, x, y;
 	protected int moveCount;
 	private ImageView i;
-	private ArrayList<int[]> moveSet;
+	private ArrayList<int[]> moveSet, killSet, protectedSet;
 	public static final int KING =1, QUEEN =2, KNIGHT = 3, BISHOP = 4, ROOK = 5, PAWN = 6;
 
 	public Piece()
 	{
 		moveSet = new ArrayList<int[]>();
+		killSet = new ArrayList<int[]>();
+		protectedSet = new ArrayList<int[]>();
 		moveCount =0;
 	}
 
@@ -26,6 +28,8 @@ public class Piece
 	{
 		this.pieceType =pieceType;
 		moveSet = new ArrayList<int[]>();
+		killSet = new ArrayList<int[]>();
+		protectedSet = new ArrayList<int[]>();
 		moveCount =0;
 	}
 
@@ -33,6 +37,8 @@ public class Piece
 	{
 		this.pieceType =pieceType;
 		moveSet = new ArrayList<int[]>();
+		killSet = new ArrayList<int[]>();
+		protectedSet = new ArrayList<int[]>();
 		moveCount =0;
 		this.col =col;
 	}
@@ -102,7 +108,6 @@ public class Piece
 		return col+" "+name;
 	}
 
-
 	public void generateMoveSet(int row, int col)
 	{
 
@@ -122,31 +127,54 @@ public class Piece
 		 * 3. account for the 'line of fire' for the specific piece and any other special conditions
 		 */
 
+
 		if (type ==1)
 		{
 			//KING
+			King p = (King) Board.grid[row][col].getPiece();
+			moveSet = p.generateMoveSet(Board.grid[row][col],0);
+			killSet = p.generateMoveSet(Board.grid[row][col],1);
+			protectedSet = p.generateMoveSet(Board.grid[row][col],2);
 		}
 		else if(type == 2)
 		{
 			//QUEEN
+			Queen p = (Queen) Board.grid[row][col].getPiece();
+			moveSet = p.generateMoveSet(Board.grid[row][col],0);
+			killSet = p.generateMoveSet(Board.grid[row][col],1);
+			protectedSet = p.generateMoveSet(Board.grid[row][col],2);
 		}
 		else if(type == 3)
 		{
 			//KNIGHT
+			Knight p = (Knight) Board.grid[row][col].getPiece();
+			moveSet = p.generateMoveSet(Board.grid[row][col],0);
+			killSet = p.generateMoveSet(Board.grid[row][col],1);
+			protectedSet = p.generateMoveSet(Board.grid[row][col],2);
 		}
 		else if(type == 4)
 		{
 			//BISHOP
+			Bishop p = (Bishop) Board.grid[row][col].getPiece();
+			moveSet = p.generateMoveSet(Board.grid[row][col],0);
+			killSet = p.generateMoveSet(Board.grid[row][col],1);
+			protectedSet = p.generateMoveSet(Board.grid[row][col],2);
 		}
 		else if (type ==5)
 		{
 			//ROOK
+			Rook p = (Rook) Board.grid[row][col].getPiece();
+			moveSet = p.generateMoveSet(Board.grid[row][col],0);
+			killSet = p.generateMoveSet(Board.grid[row][col],1);
+			protectedSet = p.generateMoveSet(Board.grid[row][col],2);
 		}
 		else if (type == 6)
 		{
 			//PAWN
 			Pawn p = (Pawn) Board.grid[row][col].getPiece();
-			moveSet = p.generateMoveSet(Board.grid[row][col]);
+			moveSet = p.generateMoveSet(Board.grid[row][col],0);
+			killSet = p.generateMoveSet(Board.grid[row][col],1);
+			protectedSet = p.generateMoveSet(Board.grid[row][col],2);
 			/*
 			 * { [x,y], [x,y], [x,y], [x,y] }
 			 */
@@ -156,12 +184,20 @@ public class Piece
 			//no moveSet
 		}
 
-
+		
 	}
 
 	public ArrayList<int[]> getMoveSet()
 	{
 		return moveSet;
+	}
+	public ArrayList<int[]> getKillSet()
+	{
+		return killSet;
+	}
+	public ArrayList<int[]> getProtectedSet()
+	{
+		return protectedSet;
 	}
 
 	public String printMoveSet()
