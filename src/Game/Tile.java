@@ -287,7 +287,4 @@ public class Tile extends Label
 			return blackFlag;
 	}
 
-
-
-
 }

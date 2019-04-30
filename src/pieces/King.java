@@ -22,7 +22,7 @@ public class King extends Piece
 	public ArrayList<int[]> generateMoveSet(Tile t,int select)
 	{
 		ArrayList<int[]> moveSet = new ArrayList<int[]>();
-		ArrayList<int[]> killSet = new ArrayList<int[]>();
+		ArrayList<int[]> killSet = new ArrayList<int[]>(); // potential set
 		ArrayList<int[]> protectedSet = new ArrayList<int[]>();
 
 		int row = t.getCoordinates()[0], col = t.getCoordinates()[1];
@@ -48,15 +48,15 @@ public class King extends Piece
 			if(a <=7 &&  a >=0 && b <=7 && b >= 0)
 			{
 				//check for occupied
+				killSet.add(moves[i]);
 				if(Board.grid[a][b].isOccupied())
 				{
 					String s =Board.grid[a][b].getPiece().getCol();
 					if(!s.equals(p.col) && !Board.grid[a][b].getFlag(s))
 					{
 						moveSet.add(moves[i]);
-						killSet.add(moves[i]);
 					}
-					else
+					else if(s.equals(p.col))
 					{
 						protectedSet.add(moves[i]);
 					}
@@ -89,7 +89,8 @@ public class King extends Piece
 			}
 		}
 		
-		
+		//KING TO KING CHECK IS WONKY
+			
 		if(select == 0)
 			return moveSet;
 		else if( select == 1)

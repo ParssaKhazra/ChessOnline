@@ -25,7 +25,6 @@ public class Board extends GridPane
 		}
 		
 		//flags =  new ArrayList<int[]>();
-
 	}
 
 	public void addTeams(ArrayList<Piece> whiteTeam, ArrayList<Piece> blackTeam)
@@ -35,7 +34,7 @@ public class Board extends GridPane
 		{
 			for(int j =0; j< 8; j++)
 			{
-				if(i == 6 )
+				if(i == 6)
 				{
 					grid[i][j].setPiece(whiteTeam.get(j)); 
 					whiteTeam.get(j).setX(i); 
