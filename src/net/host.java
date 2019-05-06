@@ -8,7 +8,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
-import com.dosse.upnp.UPnP;
+
 
 import packets.JoinPacket;
 
@@ -30,18 +30,15 @@ public class host extends Thread{
 		}
 		
 		System.out.println("Attempting UPnP port forwarding...");
-        if (UPnP.isUPnPAvailable()) { //is UPnP available?
-            if (UPnP.isMappedTCP(PORT)) { //is the port already mapped?
-                System.out.println("UPnP port forwarding not enabled: port is already mapped");
-            } else if (UPnP.openPortTCP(PORT)) { //try to map port
-                System.out.println("UPnP port forwarding enabled");
-            } else {
-                System.out.println("UPnP port forwarding failed");
-            }
-        } else {
-            System.out.println("UPnP is not available");
-        }
-		
+		/*
+		 * if (UPnP.isUPnPAvailable()) { //is UPnP available? if
+		 * (UPnP.isMappedTCP(PORT)) { //is the port already mapped?
+		 * System.out.println("UPnP port forwarding not enabled: port is already mapped"
+		 * ); } else if (UPnP.openPortTCP(PORT)) { //try to map port
+		 * System.out.println("UPnP port forwarding enabled"); } else {
+		 * System.out.println("UPnP port forwarding failed"); } } else {
+		 * System.out.println("UPnP is not available"); }
+		 */
 	}
 	public void run(){
 		
