@@ -179,28 +179,27 @@ public class Tile extends Label
 	public void setSelected() 
 	{
 		Board.clearText();
-				
-		if(p != null && !isSelected)
-		{
-			p.generateMoveSet(x,y);
-			selectedTile = this;
-			highlight();
-			isSelected = true;
-		}
-		else if(p !=null && isSelected && selectedTile.getPiece().getCol().equals(p.getCol()))
-		{
+
+		if(p != null && !isSelected()){
 			p.generateMoveSet(x, y);
 			selectedTile = this;
 			highlight();
 			isSelected = true;
 		}
-		else if(p == null && isSelected)
-		{
+
+		else if(p == null && isSelected){
 			checkMove();
+			isSelected = false;
+			Board.clearText();
 		}
-		else if(p != null && isSelected)
-		{
+		else if(p != null && isSelected){
 			checkKill();
+			isSelected = false;
+			Board.clearText();
+		}
+		else if( isSelected && p == p){
+			isSelected = false;
+			Board.clearText();
 		}
 		System.out.println(getDescription());
 	}
