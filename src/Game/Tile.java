@@ -11,6 +11,7 @@ import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.paint.Color;
+import pieces.Pawn;
 import pieces.Piece;
 
 
@@ -83,6 +84,7 @@ public class Tile extends Label
 		}
 
 		Board.setFlags();
+		Board.checkPawnPromo();
 		
 	}
 
@@ -117,6 +119,7 @@ public class Tile extends Label
 			isSelected = false;
 		
 		Board.setFlags();
+		Board.checkPawnPromo();
 	}
 
 

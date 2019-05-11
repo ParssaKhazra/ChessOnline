@@ -4,6 +4,7 @@ package Game;
 import java.util.ArrayList;
 
 import javafx.scene.layout.GridPane;
+import pieces.Pawn;
 import pieces.Piece;
 
 public class Board extends GridPane
@@ -23,7 +24,7 @@ public class Board extends GridPane
 				grid[i][j].setCoordinates(i, j);
 			}
 		}
-		
+
 		//flags =  new ArrayList<int[]>();
 	}
 
@@ -61,7 +62,7 @@ public class Board extends GridPane
 				}
 
 			}
-			
+
 			setFlags();
 		}
 
@@ -126,7 +127,7 @@ public class Board extends GridPane
 	{
 		ArrayList<int[]> removeSet = new ArrayList<int[]>();
 		Piece p = t.getPiece();
-		
+
 		p.generateMoveSet(t.getCoordinates()[0], t.getCoordinates()[1]);
 		removeSet.addAll(p.getKillSet());
 		removeSet.addAll(p.getProtectedSet());
@@ -137,7 +138,7 @@ public class Board extends GridPane
 				grid[removeSet.get(i)[0]][removeSet.get(i)[1]].setWhiteFlag(false);
 			else
 				grid[removeSet.get(i)[0]][removeSet.get(i)[1]].setBlackFlag(false);
-			
+
 		}
 	}
 
@@ -145,11 +146,11 @@ public class Board extends GridPane
 	{
 		ArrayList<int[]> addSet = new ArrayList<int[]>();
 		Piece p = t.getPiece();
-		
+
 		p.generateMoveSet(t.getCoordinates()[0], t.getCoordinates()[1]);
 		addSet.addAll(p.getKillSet());
 		addSet.addAll(p.getProtectedSet());
-		
+
 		for(int i=0; i< addSet.size(); i++)
 		{
 			if(p.getCol().equals("white"))
@@ -158,8 +159,46 @@ public class Board extends GridPane
 				grid[addSet.get(i)[0]][addSet.get(i)[1]].setBlackFlag(true);
 		}
 	}
-	
-	
 
+	public static void checkPawnPromo()
+	{
 
+		for(int j=0; j< 8; j++)
+		{
+			
+			if(grid[0][j].isOccupied() && grid[0][j].getPiece().getPieceType() == Piece.PAWN && grid[0][j].getPiece().getCol().equals("white"))		
+			{
+				Pawn p =(Pawn) grid[0][j].getPiece();
+				p.pawnPromotion(grid[0][j]);
+			}
+			else if(grid[7][j].isOccupied() && grid[7][j].getPiece().getPieceType() == Piece.PAWN && grid[7][j].getPiece().getCol().equals("black")) 
+			{
+				Pawn p =(Pawn) grid[7][j].getPiece();
+				p.pawnPromotion(grid[7][j]);
+			}
+		}
+
+	}
+
+	public static void disable()
+	{
+		for(int i=0; i<8; i++)
+		{
+			for(int j= 0; j< 8; j++)
+			{
+				grid[i][j].setDisable(true);
+			}
+		}
+	}
+	
+	public static void enable()
+	{
+		for(int i=0; i<8; i++)
+		{
+			for(int j= 0; j< 8; j++)
+			{
+				grid[i][j].setDisable(false);
+			}
+		}
+	}
 }
