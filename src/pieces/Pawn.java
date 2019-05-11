@@ -4,12 +4,25 @@ import java.util.ArrayList;
 
 import Game.Board;
 import Game.Tile;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
 public class Pawn extends Piece
 {
 	private String url;
+	private int select;
 
 	public Pawn(String col)
 	{
@@ -103,8 +116,6 @@ public class Pawn extends Piece
 			{
 				if(Board.grid[row+x][col+y].isOccupied())
 				{
-					
-
 					if(p.getCol().equals(Board.grid[row+x][col+y].getPiece().getCol()))
 					{
 						protectedSet.add(index);
@@ -115,10 +126,10 @@ public class Pawn extends Piece
 						killSet.add(index);
 					}
 				}
-				else
+				/*else
 				{
 					killSet.add(index);
-				}
+				}*/
 			}
 
 		}
@@ -132,9 +143,110 @@ public class Pawn extends Piece
 			return protectedSet;
 	}
 
-	private void pawnPromotion()
+	public void pawnPromotion(Tile t)
 	{
-		//doing this later
+		// if the white pawn gets to row 0
+		//if black pawn gets to row 7
+		String col = t.getPiece().getCol();
+		Piece p = t.getPiece();
+		
+		//make a popup
+		Stage s = new Stage();
+		FlowPane root = new FlowPane();
+		HBox pieces = new HBox();
+		
+		Button knight = new Button();
+		knight.setId(""+Piece.KNIGHT);
+		knight.setStyle("-fx-background-color: #8FBC8F;");
+		knight.setGraphic(new ImageView(new Image("/pieces/chess sprites/"+col+"Knight"+".png")));
+		knight.setOnMouseClicked(e->click(knight,t,s));
+		
+		Button rook = new Button();
+		rook.setId(""+Piece.ROOK);
+		rook.setStyle("-fx-background-color: #8FBC8F;");
+		rook.setGraphic(new ImageView(new Image("/pieces/chess sprites/"+col+"Rook"+".png")));
+		rook.setOnMouseClicked(e->click(rook,t,s));
+		
+		Button queen = new Button();
+		queen.setId(""+Piece.QUEEN);
+		queen.setGraphic(new ImageView(new Image("/pieces/chess sprites/"+col+"Queen"+".png")));
+		queen.setStyle("-fx-background-color: #8FBC8F;");
+		queen.setOnMouseClicked(e->click(queen,t,s));
+		
+		Button bishop = new Button();
+		bishop.setId(""+Piece.BISHOP);
+		bishop.setStyle("-fx-background-color: #8FBC8F;");
+		bishop.setGraphic(new ImageView(new Image("/pieces/chess sprites/"+col+"Bishop"+".png")));
+		bishop.setOnMouseClicked(e->click(bishop,t,s));
+		
+		pieces.setSpacing(15);
+		pieces.getChildren().addAll(knight, rook, bishop, queen);
+		
+		Label l = new Label("Pawn Promotion");
+		l.setStyle("-fx-font-size:22");
+		l.setPrefSize(200, 50);
+		l.setAlignment(Pos.CENTER);
+		
+		root.setStyle("-fx-background-color: #F5F5DC;");
+		
+		//root.setVgap(60);
+		root.getChildren().add(l);
+		root.getChildren().add(pieces);
+		root.setPadding(new Insets(10));
+		
+		root.setAlignment(Pos.TOP_CENTER);
+		//root.getChildren().add(1,pieces);
+		root.setPrefSize(200, 130);
+		
+		
+		Scene scene = new Scene(root);
+		s.setTitle("Pawn Promotion");
+		s.centerOnScreen();
+		s.getIcons().clear();
+		s.getIcons().add(new Image(url));
+		s.setScene(scene);
+		
+		s.setOnCloseRequest(e->e.consume());
+		s.setAlwaysOnTop(true);
+		
+		
+		Board.disable();
+		s.showAndWait();
+		
+				
+	}
+	
+	private void click(Button b, Tile t, Stage s)
+	{
+		int a = Integer.parseInt(b.getId());
+		select = a;
+		
+		Piece b1;
+		if (select == Piece.BISHOP)
+		{
+			 b1 = new Bishop(col);
+			 t.setPiece(b1);
+		}
+		else if(select == Piece.QUEEN)
+		{
+			 b1 = new Queen(col);
+			 t.setPiece(b1);
+		}
+		else if(select == Piece.KNIGHT)
+		{
+			 b1 = new Knight(col);
+			 t.setPiece(b1);
+		}
+		else if (select == Piece.ROOK)
+		{
+			 b1 = new Rook(col);
+			 t.setPiece(b1);
+		}
+		
+		s.close();
+		select =-1;
+		Board.enable();
+		
 	}
 
 

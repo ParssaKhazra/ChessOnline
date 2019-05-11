@@ -3,6 +3,7 @@ package Game;
 import java.util.ArrayList;
 
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import pieces.*;
@@ -34,6 +35,9 @@ public class Game
 		initTeams();
 
 		p.setScene(scene);
+		p.getIcons().clear();
+		p.getIcons().add(new Image("/pieces/chess sprites/blackPawn"+".png"));
+		p.setTitle("Chess Online!");
 		p.show();
 	}
 
