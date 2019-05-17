@@ -183,10 +183,6 @@ public class Tile extends Label
 	public void setSelected() 
 	{
 		Board.clearText();
-<<<<<<< HEAD
-
-		if(p != null && !isSelected()){
-=======
 			
 		/*
 		 * conditions for black turn move
@@ -232,38 +228,20 @@ public class Tile extends Label
 		else if(p !=null && isSelected && selectedTile.getPiece().getCol().equals(p.getCol()))
 		{
 			//on the same team, selecting a different piece
->>>>>>> parssa
 			p.generateMoveSet(x, y);
 			selectedTile = this;
 			highlight();
 			isSelected = true;
 		}
-<<<<<<< HEAD
-
-		else if(p == null && isSelected){
-=======
 		else if(p == null && isSelected)
 		{
 			//moving to empty tile
->>>>>>> parssa
 			checkMove();
-			isSelected = false;
-			Board.clearText();
 		}
-<<<<<<< HEAD
-		else if(p != null && isSelected){
-=======
 		else if(p != null && isSelected)
 		{
 			//checking if the piece can kill
->>>>>>> parssa
 			checkKill();
-			isSelected = false;
-			Board.clearText();
-		}
-		else if( isSelected && p == p){
-			isSelected = false;
-			Board.clearText();
 		}
 		
 		System.out.println(getDescription());
