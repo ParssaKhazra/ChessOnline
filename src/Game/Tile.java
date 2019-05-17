@@ -21,6 +21,7 @@ public class Tile extends Label
 	private static boolean isSelected;
 	private boolean hasPiece, whiteFlag, blackFlag, safe;
 	private Piece p;
+
 	private int x, y;
 	private static Tile selectedTile;
 	public String style;
@@ -36,6 +37,7 @@ public class Tile extends Label
 		this.setPrefSize(64, 64);
 		setCol(colour);
 		setPiece(null);
+
 	}
 
 	public Tile(boolean colour, Piece p)
@@ -74,7 +76,8 @@ public class Tile extends Label
 			
 			selectedTile.setPiece(null);
 			isSelected = false;
-			
+
+
 		}
 
 		else
@@ -182,28 +185,25 @@ public class Tile extends Label
 	public void setSelected() 
 	{
 		Board.clearText();
-
-		if(p != null && !isSelected()){
+	if(p.getCol().equals("white") && p!=null) {
+		if (p != null && !isSelected()) {
 			p.generateMoveSet(x, y);
 			selectedTile = this;
 			highlight();
 			isSelected = true;
-		}
-
-		else if(p == null && isSelected){
+		} else if (p == null && isSelected) {
 			checkMove();
 			isSelected = false;
 			Board.clearText();
-		}
-		else if(p != null && isSelected){
+		} else if (p != null && isSelected) {
 			checkKill();
 			isSelected = false;
 			Board.clearText();
-		}
-		else if( isSelected && p == p){
+		} else if (isSelected && p == p) {
 			isSelected = false;
 			Board.clearText();
 		}
+	}
 		System.out.println(getDescription());
 	}
 
@@ -288,5 +288,6 @@ public class Tile extends Label
 		else
 			return blackFlag;
 	}
+
 
 }
