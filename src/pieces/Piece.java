@@ -15,6 +15,7 @@ public class Piece
 	private ImageView i;
 	private ArrayList<int[]> moveSet, killSet, protectedSet;
 	public static final int KING =1, QUEEN =2, KNIGHT = 3, BISHOP = 4, ROOK = 5, PAWN = 6;
+	public static boolean turn = true;
 
 	public Piece()
 	{

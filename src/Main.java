@@ -23,4 +23,22 @@ public class Main extends Application
 		launch(args);
 	}
 
+<<<<<<< HEAD
+=======
+	/*
+	 * TO DO LIST
+	1. re do king movement
+	2. check
+	3. check mate
+	4. dead piece display
+	5. special moves
+    	-> castling
+    	-> en passent
+   	6. display turns
+   	7. display dead pieces
+	8.online support
+	 
+	*/
+
+>>>>>>> parssa
 }
