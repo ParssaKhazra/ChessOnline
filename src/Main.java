@@ -1,11 +1,11 @@
-
+import Game.Board;
 import Game.Game;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 
 
-public class Main extends Application 
+public class Main extends Application
 {
 	public void start(Stage primaryStage) 
 	{
@@ -22,5 +22,7 @@ public class Main extends Application
 	{
 		launch(args);
 	}
-
 }
+
+
+
