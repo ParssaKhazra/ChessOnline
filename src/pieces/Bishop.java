@@ -74,14 +74,19 @@ public class Bishop extends Piece
 				{
 					if(Board.grid[x][y].getPiece().getCol().equals(p.getCol()) )
 					{
+						//protecting an ally piece
 						protectedSet.add(index);
 						blocked = true;
 					}
 					else
 					{
-						moveSet.add(index);
-						blocked = true;
-					}
+						//killing an enemy piece
+						//make this cleaner later - first improve check
+						if(Board.grid[x][y].getPiece().getPieceType() != Piece.KING)
+						{
+							blocked = true;
+						}
+						moveSet.add(index);					}
 				}
 				else
 				{

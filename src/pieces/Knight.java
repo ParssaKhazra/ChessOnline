@@ -78,5 +78,6 @@ public class Knight extends Piece
 		else if( select == 1)
 			return moveSet;
 		else
-			return protectedSet;	}
+			return protectedSet;	
+		}
 }

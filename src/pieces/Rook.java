@@ -30,14 +30,16 @@ public class Rook extends Piece
 	public ArrayList<int[]> generateMoveSet(Tile t, int select)	
 	{
 		ArrayList<int[]> moveSet = new ArrayList<int[]>();
+		ArrayList<int[]> killSet = new ArrayList<int[]>();
 		ArrayList<int[]> protectedSet = new ArrayList<int[]>();
 
 		int row = t.getCoordinates()[0], col = t.getCoordinates()[1];
 		Piece p = t.getPiece();
 
 		/*
-		 * Bishop can move diagonal in any direction
+		 * ROOK can move horizontal/ vertical in any direction
 		 * stop at friendly(exclusive) and enemy(inclusive)
+		 * extend the killset to the next piece behind the king if empty 
 		 */
 		int x=row, y=col;
 		/*
@@ -77,13 +79,21 @@ public class Rook extends Piece
 					//for killing or protecting 
 					if(Board.grid[x][y].getPiece().getCol().equals(p.getCol()) )
 					{
+						//protecting an ally piece
 						blocked = true;
 						protectedSet.add(index);
 					}
 					else
 					{
+						//killing an enemy piece
+						//make this cleaner later - first improve check
+						
+						if(Board.grid[x][y].getPiece().getPieceType() != Piece.KING)
+						{
+							blocked = true;
+						}
 						moveSet.add(index);
-						blocked = true;
+						
 					}
 				}
 				else

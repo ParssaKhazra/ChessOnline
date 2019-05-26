@@ -14,11 +14,11 @@ public class King extends Piece
 	{
 		super(Piece.KING, col);
 		url = "/pieces/chess sprites/"+col+"King"+".png";
-		
+
 		super.setImage(new ImageView(new Image(url))) ;
 		super.setName("King");
 	}
-	
+
 	public ArrayList<int[]> generateMoveSet(Tile t,int select)
 	{
 		ArrayList<int[]> moveSet = new ArrayList<int[]>();
@@ -27,75 +27,66 @@ public class King extends Piece
 
 		int row = t.getCoordinates()[0], col = t.getCoordinates()[1];
 		Piece p = t.getPiece();
-		
+
 		/*
 		 * the king moves in every direction, 1 space	
 		 */
 		//ACCOUNTING FOR CHECK LATER
-				
+
 		int x = row; int y= col;
 		int[][] moves = new int[][]
-		{		
+				{		
 			{x+1, y+1}, {x+1, y-1}, {x-1, y+1}, {x-1, y-1}, {x+1, y}, {x-1, y}, {x, y+1}, {x, y-1} 
-		};
-		
-		
-		//iterate through the moves and detect valid ones
-		for(int i=0; i< 8; i++)
-		{
-			//if x>7, x<0, y>7, y<0 auto invalid
-			int a = moves[i][0], b = moves[i][1];
-			if(a <=7 &&  a >=0 && b <=7 && b >= 0)
-			{
-				//check for occupied
-				killSet.add(moves[i]);
-				if(Board.grid[a][b].isOccupied())
+				};
+
+
+				//iterate through the moves and detect valid ones
+				for(int i=0; i< 8; i++)
 				{
-					String s =Board.grid[a][b].getPiece().getCol();
-					if(!s.equals(p.col) && !Board.grid[a][b].getFlag(s))
+					//if x>7, x<0, y>7, y<0 auto invalid
+					int a = moves[i][0], b = moves[i][1];
+					if(a <=7 &&  a >=0 && b <=7 && b >= 0)
 					{
-						moveSet.add(moves[i]);
-					}
-					else if(s.equals(p.col))
-					{
-						protectedSet.add(moves[i]);
+						if(!Board.grid[a][b].isOccupied())
+						{
+							if(p.getCol().equals("black") )
+							{
+								if(!Board.grid[a][b].getWhiteFlag())
+									moveSet.add(moves[i]);
+							}
+							else
+							{
+								if(!Board.grid[a][b].getBlackFlag())
+									moveSet.add(moves[i]);
+							}
+						}
+						//check for kill or protect
+						else
+						{
+							String s = "";
+							if(p.getCol().equals("white"))
+								s="black";
+							else
+								s="white";
+							
+							if(!p.getCol().equals(Board.grid[a][b].getPiece().getCol()) && !Board.grid[a][b].getFlag(s))
+							{
+								moveSet.add(moves[i]);
+								killSet.add(moves[i]);
+							}
+						}
 					}
 				}
-				else 
-				{
-					//moveSet.add(moves[i]);
-					if( Board.grid[a][b].getWhiteFlag() && p.col.equals("white"))
-					{
-						moveSet.add(moves[i]);
-					}
-					else if(Board.grid[a][b].getWhiteFlag() && p.col.equals("black"))
-					{
-						System.err.println("flaged ("+a+","+b+")");
-					}
-					else if( Board.grid[a][b].getBlackFlag() && p.col.equals("black"))
-					{
-						moveSet.add(moves[i]);
-					}
-					else if(Board.grid[a][b].getBlackFlag() && p.col.equals("white"))
-					{
-						System.err.println("flaged ("+a+","+b+")");
-					}
-					else
-					{
-						moveSet.add(moves[i]);
-					}
-					
-				}
-			}
-		}
-		
-		//KING TO KING CHECK IS WONKY
-			
-		if(select == 0)
-			return moveSet;
-		else if( select == 1)
-			return killSet;
-		else
-			return protectedSet;
+
+				//KING TO KING CHECK IS WONKY
+
+				if(select == 0)
+					return moveSet;
+				else if( select == 1)
+					return killSet;
+				else
+					return protectedSet;
 	}
+
+	
 }

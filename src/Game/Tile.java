@@ -75,6 +75,14 @@ public class Tile extends Label
 			selectedTile.setPiece(null);
 			isSelected = false;
 			Piece.turn = !Piece.turn;
+			Board.setFlags();
+			Board.checkPawnPromo();
+			String s = "";
+			if(p.getCol().equals("white"))
+				s="black";
+			else
+				s="white";
+			Board.Check(s);
 		}
 
 		else
@@ -83,8 +91,6 @@ public class Tile extends Label
 			isSelected = false;
 		}
 
-		Board.setFlags();
-		Board.checkPawnPromo();
 		
 	}
 
@@ -114,13 +120,20 @@ public class Tile extends Label
 			selectedTile.setPiece(null);
 			isSelected =  false;
 			Piece.turn = !Piece.turn;
-
+			Board.setFlags();
+			Board.checkPawnPromo();
+			
+			String s="";
+			if(p.getCol().equals("white"))
+				s="black";
+			else
+				s="white";
+			Board.Check(s);
 		}
 		else
 			isSelected = false;
 		
-		Board.setFlags();
-		Board.checkPawnPromo();
+		
 	}
 
 
@@ -198,6 +211,8 @@ public class Tile extends Label
 		 */
 		if(!isSelected && p!= null)
 		{
+			
+			
 			if(Piece.turn && p.getCol().equals("white"))
 			{
 				//white's turn, can select a piece
@@ -215,10 +230,7 @@ public class Tile extends Label
 				isSelected = true;
 			}
 			
-		}
-		
-		
-		
+		}	
 		else if(isSelected && selectedTile.getPiece()==p)
 		{
 			//de-selecting the current piece

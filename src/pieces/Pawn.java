@@ -126,10 +126,10 @@ public class Pawn extends Piece
 						killSet.add(index);
 					}
 				}
-				/*else
+				else
 				{
 					killSet.add(index);
-				}*/
+				}
 			}
 
 		}

@@ -123,24 +123,7 @@ public class Board extends GridPane
 	}
 
 
-	public static void removeFlags(Tile t)
-	{
-		ArrayList<int[]> removeSet = new ArrayList<int[]>();
-		Piece p = t.getPiece();
-
-		p.generateMoveSet(t.getCoordinates()[0], t.getCoordinates()[1]);
-		removeSet.addAll(p.getKillSet());
-		removeSet.addAll(p.getProtectedSet());
-
-		for(int i=0; i< removeSet.size(); i++)
-		{
-			if(p.getCol().equals("white"))
-				grid[removeSet.get(i)[0]][removeSet.get(i)[1]].setWhiteFlag(false);
-			else
-				grid[removeSet.get(i)[0]][removeSet.get(i)[1]].setBlackFlag(false);
-
-		}
-	}
+	
 
 	public static void addFlags(Tile t)
 	{
@@ -149,6 +132,7 @@ public class Board extends GridPane
 
 		p.generateMoveSet(t.getCoordinates()[0], t.getCoordinates()[1]);
 		addSet.addAll(p.getKillSet());
+		//addSet.addAll(p.getMoveSet());
 		addSet.addAll(p.getProtectedSet());
 
 		for(int i=0; i< addSet.size(); i++)
@@ -201,4 +185,48 @@ public class Board extends GridPane
 			}
 		}
 	}
+
+	public static boolean Check(String col)
+	{
+		boolean check = false;
+		
+		//iterate thru the board
+		for(int i=0; i< 8; i++)
+		{
+			for(int j=0; j< 8; j++)
+			{
+				Piece p = grid[i][j].getPiece();
+				
+				/*
+				 * if the current tile is occupied
+				 * if the piece is a king
+				 * and the passed in colour matches the king color
+				 * -> check if the tile its on is flagged
+				 */
+				if(grid[i][j].isOccupied() && p.getPieceType() == Piece.KING && p.getCol().equals(col))
+				{
+					String s = "";
+					if(p.getCol().equals("white"))
+						s="black";
+					else
+						s="white";
+					
+					if(grid[i][j].getFlag(s))
+					{
+						check = true;
+						System.err.println("check Dx");
+					}
+				}
+			}
+		}
+		
+		
+		return check;
+	}
+
+
+
+
+
+
 }
