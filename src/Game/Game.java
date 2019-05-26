@@ -2,9 +2,13 @@ package Game;
 
 import java.util.ArrayList;
 import java.util.Optional;
-
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 
+
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 
 import javafx.scene.layout.GridPane;

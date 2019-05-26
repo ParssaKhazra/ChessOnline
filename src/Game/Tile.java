@@ -2,7 +2,6 @@ package Game;
 
 
 import java.util.ArrayList;
-
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -77,7 +76,6 @@ public class Tile extends Label
 			selectedTile.setPiece(null);
 			isSelected = false;
 
-
 		}
 
 		else
@@ -116,6 +114,7 @@ public class Tile extends Label
 		//	Board.addFlags(this);
 			selectedTile.setPiece(null);
 			isSelected =  false;
+			Piece.turn = !Piece.turn;
 
 		}
 		else
@@ -187,10 +186,58 @@ public class Tile extends Label
 		Board.clearText();
 	if(p.getCol().equals("white") && p!=null) {
 		if (p != null && !isSelected()) {
+
+			
+		/*
+		 * conditions for black turn move
+		 * 1. hehe xd
+		 * 2. there is a piece on the tile
+		 * 3. the turn var is = false
+		 * 4. the piece on the tile colour is black
+		 * 
+		 * THEN they can select tile
+		 * 
+		 * if the selected tile is NOT null, and if it is black's, and the colour of the piece on the tile is black
+		 * they can select any tile
+		 */
+		if(!isSelected && p!= null)
+		{
+			if(Piece.turn && p.getCol().equals("white"))
+			{
+				//white's turn, can select a piece
+				p.generateMoveSet(x,y);
+				selectedTile = this;
+				highlight();
+				isSelected = true;
+			}
+			else if(!Piece.turn && p.getCol().equals("black"))
+			{
+				//black can select a piece
+				p.generateMoveSet(x,y);
+				selectedTile = this;
+				highlight();
+				isSelected = true;
+			}
+			
+		}
+		
+		
+		
+		else if(isSelected && selectedTile.getPiece()==p)
+		{
+			//de-selecting the current piece
+			isSelected =false;
+			Board.clearText();
+		}
+		else if(p !=null && isSelected && selectedTile.getPiece().getCol().equals(p.getCol()))
+		{
+			//on the same team, selecting a different piece
+
 			p.generateMoveSet(x, y);
 			selectedTile = this;
 			highlight();
 			isSelected = true;
+
 		} else if (p == null && isSelected) {
 			checkMove();
 			isSelected = false;
@@ -204,13 +251,26 @@ public class Tile extends Label
 			Board.clearText();
 		}
 	}
+		}
+		else if(p == null && isSelected)
+		{
+			//moving to empty tile
+			checkMove();
+		}
+		else if(p != null && isSelected)
+		{
+			//checking if the piece can kill
+			checkKill();
+		}
+		
+
 		System.out.println(getDescription());
 	}
 
 	private void highlight()
 	{
 		ArrayList<int[]> moveSet = selectedTile.getPiece().getMoveSet();
-		ArrayList<int[]> protectedSet = selectedTile.getPiece().getProtectedSet();
+		//ArrayList<int[]> protectedSet = selectedTile.getPiece().getProtectedSet();
 
 		//moves and kills
 		for(int i=0; i< moveSet.size(); i++)
